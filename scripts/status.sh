@@ -17,7 +17,9 @@ while read -r repo; do
     printf '%-26s %s\n' "$name" "${C_DIM}not a git repository yet${C_RESET}"
     continue
   fi
-  $fetch && git -C "$repo" fetch --quiet 2>/dev/null || true
+  if $fetch; then
+    git -C "$repo" fetch --quiet 2>/dev/null || warn "$name: fetch failed"
+  fi
 
   branch="$(git -C "$repo" symbolic-ref --short -q HEAD || echo '(detached)')"
   if git -C "$repo" rev-parse --abbrev-ref '@{u}' >/dev/null 2>&1; then
@@ -27,7 +29,11 @@ while read -r repo; do
     upstream="no upstream"
   fi
   changes="$(git -C "$repo" status --porcelain 2>/dev/null | wc -l | tr -d ' ')"
-  [[ "$changes" == 0 ]] && changes="${C_GREEN}clean${C_RESET}" || changes="${C_YELLOW}$changes changed${C_RESET}"
+  if [[ "$changes" == 0 ]]; then
+    changes="${C_GREEN}clean${C_RESET}"
+  else
+    changes="${C_YELLOW}$changes changed${C_RESET}"
+  fi
 
   printf '%-26s %-22s %-14s %s\n' "$name" "$branch" "$upstream" "$changes"
 done < <(cloned_repos)
