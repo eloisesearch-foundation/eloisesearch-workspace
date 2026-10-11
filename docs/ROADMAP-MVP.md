@@ -42,7 +42,7 @@ is measured.
       against OpenSearch, routes at the root, no product-check header
       ([`design-decisions.md`](https://github.com/eloisesearch-foundation/eloisesearch/blob/main/docs/design-decisions.md#4-api-compatibility-as-the-adoption-path)).
 - [x] Compatibility matrix drafted ([`api-contract.md`](https://github.com/eloisesearch-foundation/eloisesearch/blob/main/docs/api-contract.md)).
-- [ ] Pin the OpenSearch reference version.
+- [x] Pin the OpenSearch reference version: 3.9.0.
 - [ ] Reference harness: Elasticsearch 9.5.4 and OpenSearch run as containers
       in `eloisesearch-integration` CI, so the movie fixtures can be executed
       against them first (baseline) and against Eloisesearch later.
@@ -75,8 +75,10 @@ Exit criterion met: a clean checkout builds and serves `/health` with `make run`
 
 Outcome: documents are stored durably in a persistent index.
 
-- [ ] `docs/design-persistence.md`: WAL record format, acknowledgment boundary,
-      sync policy, checkpoint and recovery procedure, refresh defaults.
+- [x] [`docs/design-persistence.md`](https://github.com/eloisesearch-foundation/eloisesearch/blob/main/docs/design-persistence.md):
+      WAL record format, acknowledgment boundary, sync policy, checkpoint and
+      recovery procedure, refresh defaults. Its plan splits the rest of this
+      phase into seven PRs.
 - [ ] `PUT /{index}` with the supported `mappings` and analysis `settings`;
       `GET`, `HEAD`, `DELETE /{index}`.
 - [ ] `PUT /{index}/_doc/{id}`, `POST /{index}/_doc`, `GET` and `DELETE`
