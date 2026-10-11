@@ -87,16 +87,47 @@ task lists. Tick an item in the commit that completes it.
   another product.
 - No emojis in docs, file names or editor configuration.
 
+## Git workflow: branches, grouped commits, pull requests (all repositories)
+
+Every roadmap item (or a coherent part of one) is delivered on its own branch and
+merged through a pull request. Nothing is committed directly to `main`.
+
+1. **Branch from an up-to-date `main`**, named `<type>/<topic>`:
+   `feat/index-lifecycle`, `docs/design-persistence`, `fix/timeout-envelope`,
+   `ci/meta-repo-checks`. Types follow Conventional Commits: `feat`, `fix`, `docs`,
+   `test`, `refactor`, `ci`, `chore`.
+2. **Commit in logical groups, not one big commit.** Each commit is one reviewable
+   step with a Conventional Commits message, for example:
+   `docs: design for persistence` → `test: failing lifecycle tests` →
+   `feat(core): durable write log` → `feat(server): document routes` →
+   `docs: contract and CHANGELOG`. Every commit builds and passes the repository
+   gate (`make check`), so history stays bisectable. Clean up `wip`/`fixup`
+   commits before asking for review.
+3. **Open a pull request** to `main` with the repository's PR template
+   (Objective, Method, Constraints, Validation). Its title is a Conventional
+   Commits summary; its body links the roadmap item and the design doc. Docs,
+   `CHANGELOG.md` and tests ship in the same PR. CI must be green.
+4. **Roadmap checkboxes** live in `eloisesearch-workspace/docs/ROADMAP-MVP.md`.
+   Work in another repository ticks its items in a companion workspace PR that
+   links the product PR; work inside the workspace ticks them in the same PR.
+5. **Review and merge belong to the maintainer.** Merge without squashing
+   (merge commit or rebase) so the grouped commits survive; delete the branch
+   afterwards. Work that spans repositories is one PR per repository, each
+   linking the others.
+
+Agents may create branches, commit and open pull requests (as drafts unless told
+otherwise) when asked. They never push to `main`, merge, force-push a branch
+someone else is using, tag or bump versions without explicit approval.
+
 ## Rules for agents
 
 - Read the target repository's `AGENTS.md` before changing it, and run its
   gate (`make check` in `eloisesearch`) before saying a change is done.
-- Keep changes inside one repository per commit. A change that spans
-  repositories is a set of commits, one per repository, referenced from each
-  other.
-- Do not create GitHub repositories, push, tag or bump versions without the
-  maintainer's explicit approval. Agents review, audit and draft; the maintainer
-  decides.
+- Keep changes inside one repository per commit and per pull request; follow the
+  git workflow above.
+- Do not create GitHub repositories, push to `main`, merge, tag or bump versions
+  without the maintainer's explicit approval. Agents review, audit and draft; the
+  maintainer decides.
 - Adding a repository touches three places: `repos.txt`,
   `eloisesearch.code-workspace` and `customizations.codespaces.repositories` in
   `.devcontainer/devcontainer.json`.
