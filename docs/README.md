@@ -1,8 +1,9 @@
 # Eloisesearch documentation index
 
 Technical documentation lives in the repositories, in Markdown, and changes in the
-same commit as the code. This page points to all of it. Notion only presents the
-Foundation and links here.
+same commit as the code. This page points to all of it. Notion presents the
+Foundation and keeps synced, read-only copies of the main documents; tasks live
+only in the roadmap.
 
 ## Start here
 

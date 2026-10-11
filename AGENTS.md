@@ -46,8 +46,13 @@ make help              # everything
 ## Documentation conventions (all repositories)
 
 **Source of truth.** Technical documentation lives in the repositories, in
-Markdown, and changes in the same commit as the code it describes. Notion is a
-presentation layer for the Foundation and links here; it holds no specification.
+Markdown, and changes in the same commit as the code it describes. Notion presents the Foundation and keeps
+synced, read-only copies of the main documents (marked as such); it holds no task
+lists, and changes are made here first, then copied.
+
+**Tasks.** Open work is tracked only in [`docs/ROADMAP-MVP.md`](docs/ROADMAP-MVP.md),
+as checkboxes under each phase. Other docs explain and specify; they do not hold
+task lists. Tick an item in the commit that completes it.
 
 **Where things go.**
 

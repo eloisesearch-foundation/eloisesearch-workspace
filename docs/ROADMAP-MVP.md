@@ -12,6 +12,9 @@ The MVP is a single-node service with Eloisesearch's own versioned HTTP/JSON API
 
 ## Ground rules
 
+- **This file is the task list.** Every open item for the MVP lives here, as a
+  checkbox under its phase. Design docs and Notion describe and explain; they do
+  not track work. Tick an item in the same commit that completes it.
 - **One item at a time.** Each item is designed, tested, implemented, documented
   and merged before the next starts.
 - **Design before code** for anything non-trivial: `docs/design-<topic>.md` in the
@@ -36,6 +39,9 @@ is measured.
 - [ ] Freeze the deterministic movie test corpus and write the behavioral
       fixtures (`contracts/search-cases.json` in `eloisesearch-integration`).
 - [ ] Decide the malformed-query contract (documented 400 vs lenient empty result).
+- [ ] Finalize route and resource naming (draft in `api-contract.md`) before
+      writing the OpenAPI document.
+- [ ] Decide which analyzers and field mappings the movie scenario needs.
 - [ ] Label every candidate capability MVP / next phase / out of scope.
 
 ### Phase 1 — Service foundation (`eloisesearch`) — Done
@@ -60,7 +66,10 @@ Outcome: documents are stored durably in a persistent index.
 - [ ] Index, replace and delete documents by stable ID.
 - [ ] Refresh semantics (`false` / `true` / `wait_for`) and an explicit refresh.
 - [ ] Indexes survive graceful restart and abrupt termination.
-- [ ] Errors for invalid schemas, missing indexes and persistence failures.
+- [ ] Errors for invalid schemas, missing indexes, duplicate and missing IDs,
+      and persistence failures.
+- [ ] Lifecycle tests from the [quality plan](https://github.com/eloisesearch-foundation/eloisesearch/blob/main/docs/quality-plan.md#4-reliability-and-lifecycle-tests)
+      run in CI without external services.
 
 Exit: document lifecycle works reliably and data is available after restart.
 
@@ -74,6 +83,10 @@ Outcome: the engine serves every query the movie demo needs.
 - [ ] Weighted fields, relevance, pagination, sorting with deterministic ties.
 - [ ] Facets, suggestions and highlighting.
 - [ ] Input validation and documented errors.
+- [ ] Every MVP feature has request/response fixtures and moves to **Supported**
+      in `api-contract.md`.
+- [ ] Boundary cases tested: blank input, long prefixes, accents, no matches,
+      invalid pagination, malformed queries.
 - [ ] OpenAPI document published.
 
 Exit: contract tests verify the supported requests, responses and errors.
@@ -82,6 +95,8 @@ Exit: contract tests verify the supported requests, responses and errors.
 
 Outcome: the demo runs entirely on Eloisesearch.
 
+- [ ] Decide the Ruby SDK scope for the MVP: thin HTTP client or Active Record
+      integration.
 - [ ] Repeatable import of the fixed movie dataset.
 - [ ] Behavioral fixtures run against Eloisesearch in CI.
 - [ ] Relevance reviewed against the judged query set.
@@ -100,6 +115,7 @@ Outcome: a reproducible, documented MVP others can evaluate.
 - [ ] Limitations, configuration and recovery documented.
 - [ ] Versioning policy; tag-triggered release with binaries, checksums and
       release notes from the CHANGELOG; Docker image built from the same binary.
+- [ ] Release gate in the [quality plan](https://github.com/eloisesearch-foundation/eloisesearch/blob/main/docs/quality-plan.md#5-release-gate) met.
 - [ ] First experimental release tagged (with maintainer approval).
 
 Exit: someone new to the project runs the demo, understands the supported
