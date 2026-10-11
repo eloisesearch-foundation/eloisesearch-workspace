@@ -16,9 +16,10 @@ and work on them together in one VS Code window, locally or in GitHub Codespaces
 ├── .github/                    # org profile repo (eloisesearch-foundation/.github)
 ├── eloisesearch-workspace/     # ← this meta-repo
 │   ├── .devcontainer/          # Codespaces / Dev Containers
-│   ├── docs/                   # shared docs and decisions (ADRs)
-│   ├── scripts/                # bootstrap, status, each
-│   ├── Makefile                # setup, pull, status, workspace
+│   ├── AGENTS.md               # instructions for agents (CLAUDE.md imports it)
+│   ├── docs/                   # roadmap, cross-repo decisions, templates, prompts
+│   ├── scripts/                # bootstrap, status, each, docs checks
+│   ├── Makefile                # setup, pull, status, workspace, docs-*
 │   ├── repos.txt               # repository manifest
 │   └── eloisesearch.code-workspace
 ├── eloisesearch/               # core: Rust + Tantivy engine and HTTP API
@@ -69,6 +70,8 @@ and the `customizations.codespaces.repositories` permissions are what make it wo
 | `scripts/bootstrap.sh [--all] [--pull] [--dry-run]` | Clone missing repositories (optionally fast-forward existing ones). |
 | `scripts/status.sh [--fetch]` | Branch, ahead/behind and uncommitted changes for every repo. |
 | `scripts/each.sh <cmd…>` | Run a command in every cloned repository, e.g. `scripts/each.sh git pull --ff-only`. |
+| `scripts/new-design.sh <topic> [repo]` | Create `<repo>/docs/design-<topic>.md` from the template (`make docs-new-design`). |
+| `scripts/check-docs.py` | Report broken relative links in Markdown across all cloned repositories (`make docs-check`). |
 
 Environment overrides: `WORKSPACE_ROOT` (where siblings live, default `..`) and
 `GIT_PROTOCOL` (`ssh` locally, `https` automatically in Codespaces).
@@ -83,5 +86,13 @@ Environment overrides: `WORKSPACE_ROOT` (where siblings live, default `..`) and
 
 ## Documentation
 
-See [`docs/`](docs/README.md). The canonical project docs live in Notion
-([Eloisesearch Foundation](https://app.notion.com/p/3f55f14602da802f8b3ae81cc827e084)).
+Technical documentation lives in the repositories and changes with the code.
+Start at [`docs/README.md`](docs/README.md); the conventions every repository
+follows are in [`AGENTS.md`](AGENTS.md#documentation-conventions-all-repositories).
+
+```bash
+make docs-new-design NAME=persistence            # eloisesearch/docs/design-persistence.md
+make docs-new-design NAME=client REPO=eloisesearch-ruby
+make docs-check                                  # broken relative links, all repos
+make changelog-check                             # CHANGELOG structure, all repos
+```
