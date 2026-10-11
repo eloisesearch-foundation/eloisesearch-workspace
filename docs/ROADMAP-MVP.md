@@ -78,18 +78,30 @@ Outcome: documents are stored durably in a persistent index.
 - [x] [`docs/design-persistence.md`](https://github.com/eloisesearch-foundation/eloisesearch/blob/main/docs/design-persistence.md):
       WAL record format, acknowledgment boundary, sync policy, checkpoint and
       recovery procedure, refresh defaults. Its plan splits the rest of this
-      phase into seven PRs.
-- [ ] `PUT /{index}` with the supported `mappings` and analysis `settings`;
-      `GET`, `HEAD`, `DELETE /{index}`.
-- [ ] `PUT /{index}/_doc/{id}`, `POST /{index}/_doc`, `GET` and `DELETE`
-      `/{index}/_doc/{id}`, with the reference response shapes.
-- [ ] `_bulk` (NDJSON, per-item results and errors).
-- [ ] Refresh semantics (`false` / `true` / `wait_for`) and `POST /{index}/_refresh`.
-- [ ] Indexes survive graceful restart and abrupt termination.
-- [ ] Errors for invalid schemas, missing indexes, duplicate and missing IDs,
-      and persistence failures.
-- [ ] Lifecycle tests from the [quality plan](https://github.com/eloisesearch-foundation/eloisesearch/blob/main/docs/quality-plan.md#5-reliability-and-lifecycle-tests)
-      run in CI without external services.
+      phase into the seven PRs below.
+Implementation, one PR per step of the design's plan:
+
+- [x] 1. Storage layout and index lifecycle (core): versioned data directory
+      with an exclusive lock, crash-safe index create, list and delete, startup
+      cleanup of interrupted operations.
+- [ ] 2. WAL (core): record codec, append with group sync, roll-over, recovery
+      reader (torn tail truncated, other corruption fails loudly), fault-injection
+      tests for partial writes.
+- [ ] 3. Tantivy index and recovery (core): schema from the supported mappings,
+      writer thread, checkpoint in the commit payload, replay on open.
+- [ ] 4. Visibility (core): version map, realtime GET, scheduled refresh, flush
+      thresholds, `refresh=false|true|wait_for`.
+- [ ] 5. HTTP routes (server): `PUT`, `GET`, `HEAD`, `DELETE /{index}`;
+      `PUT|POST /{index}/_doc[/{id}]`, `GET` and `DELETE /{index}/_doc/{id}`;
+      `_bulk` with per-item results; `POST /{index}/_refresh`; errors for invalid
+      schemas, missing indexes, duplicate and missing IDs, and persistence
+      failures, with the reference types.
+- [ ] 6. Crash tests: run the real binary, kill it at chosen points, restart, and
+      check every acknowledged write (graceful restart and abrupt termination),
+      in CI without external services.
+- [ ] 7. Compatibility checks of the Phase 2 routes against Elasticsearch 9.5.4
+      and OpenSearch 3.9.0; matching rows move to **Supported** in
+      `api-contract.md`.
 
 Exit: document lifecycle works reliably and data is available after restart.
 
