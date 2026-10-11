@@ -9,8 +9,8 @@ and pagination, with indexes that survive restarts. Everything the demo relies o
 is documented in the API contract and proven by tests.
 
 The MVP is a single-node service whose API is a documented subset of the
-Elasticsearch 9.5.4 REST API and Query DSL, verified against OpenSearch, so teams
-can migrate existing applications and tools by pointing them at Eloisesearch. The
+Elasticsearch 9.5.4 REST API and Query DSL, to be checked against Elasticsearch
+9.5.4 and OpenSearch 3.9.0 by the reference harness (Phase 0), so teams can migrate existing applications and tools by pointing them at Eloisesearch. The
 demo itself is written against that compatible API.
 
 ## Ground rules
@@ -71,7 +71,7 @@ Outcome: a maintainable Rust service that builds, runs and is tested in CI.
 
 Exit criterion met: a clean checkout builds and serves `/health` with `make run`.
 
-### Phase 2 — Indexing and persistence (`eloisesearch`) — Next
+### Phase 2 — Indexing and persistence (`eloisesearch`) — In progress
 
 Outcome: documents are stored durably in a persistent index.
 
