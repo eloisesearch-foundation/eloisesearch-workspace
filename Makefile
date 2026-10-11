@@ -7,7 +7,7 @@ help: ## List available targets
 setup: ## Clone core repositories as siblings
 	@scripts/bootstrap.sh
 
-setup-all: ## Clone core and SDK/integration repositories
+setup-all: ## Clone core and SDK repositories
 	@scripts/bootstrap.sh --all
 
 pull: ## Fast-forward every cloned repository

@@ -24,7 +24,7 @@ Codespaces (`/workspaces/<name>`), from the manifest in [`repos.txt`](repos.txt)
 | Repository | Purpose | Status |
 | --- | --- | --- |
 | `eloisesearch` | Rust engine and HTTP/JSON server | Active |
-| `eloisesearch-integration` | Demo apps (Rails + Nuxt movie search), shared fixtures, end-to-end and contract tests | Planned |
+| `eloisesearch-integration` | Reference harness and contract fixtures; later the demo apps (Rails + Nuxt movie search) and end-to-end tests | Active |
 | `eloisesearch-ruby` | Ruby SDK and optional Rails integration | Planned |
 | `eloisesearch-javascript` | JavaScript/TypeScript SDK | Planned |
 
@@ -32,7 +32,7 @@ Codespaces (`/workspaces/<name>`), from the manifest in [`repos.txt`](repos.txt)
 
 ```bash
 make setup             # clone missing core repositories as siblings
-make setup-all         # also SDK / integration repositories
+make setup-all         # also SDK repositories
 make status            # branch, ahead/behind, local changes for every repo
 make pull              # fast-forward every cloned repo
 make workspace         # open eloisesearch.code-workspace in VS Code

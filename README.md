@@ -23,7 +23,7 @@ and work on them together in one VS Code window, locally or in GitHub Codespaces
 │   ├── repos.txt               # repository manifest
 │   └── eloisesearch.code-workspace
 ├── eloisesearch/               # core: Rust + Tantivy engine and HTTP API
-├── eloisesearch-integration/   # demos, fixtures, E2E / contract tests        (planned)
+├── eloisesearch-integration/   # reference harness, contract fixtures, demos, E2E
 ├── eloisesearch-ruby/          # Ruby SDK + optional Rails integration        (planned)
 └── eloisesearch-javascript/    # JavaScript / TypeScript SDK                  (planned)
 ```
@@ -32,7 +32,7 @@ and work on them together in one VS Code window, locally or in GitHub Codespaces
 | --- | --- | --- |
 | `eloisesearch-workspace` | — | Workspace, Codespaces, shared docs and scripts. |
 | `eloisesearch` | core | Rust engine (Tantivy), HTTP/JSON server, OpenAPI. |
-| `eloisesearch-integration` | sdk | Demo apps, shared fixtures, end-to-end and contract tests. |
+| `eloisesearch-integration` | core | Reference harness and contract fixtures (run against Elasticsearch, OpenSearch and Eloisesearch); later the demo apps and end-to-end tests. |
 | `eloisesearch-ruby` | sdk | Ruby HTTP client and optional Rails integration. |
 | `eloisesearch-javascript` | sdk | JavaScript/TypeScript client. |
 
@@ -44,7 +44,7 @@ git clone git@github.com:eloisesearch-foundation/eloisesearch-workspace.git   # 
 cd eloisesearch-workspace
 
 make setup                       # core repositories (scripts/bootstrap.sh)
-make setup-all                   # + SDK / integration repositories
+make setup-all                   # + SDK repositories
 make workspace                   # code eloisesearch.code-workspace
 ```
 
