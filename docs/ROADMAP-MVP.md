@@ -43,13 +43,16 @@ is measured.
       ([`design-decisions.md`](https://github.com/eloisesearch-foundation/eloisesearch/blob/main/docs/design-decisions.md#4-api-compatibility-as-the-adoption-path)).
 - [x] Compatibility matrix drafted ([`api-contract.md`](https://github.com/eloisesearch-foundation/eloisesearch/blob/main/docs/api-contract.md)).
 - [x] Pin the OpenSearch reference version: 3.9.0.
-- [ ] Reference harness: Elasticsearch 9.5.4 and OpenSearch run as containers
-      in `eloisesearch-integration` CI, so the movie fixtures can be executed
-      against them first (baseline) and against Eloisesearch later.
-- [ ] Freeze the deterministic movie test corpus and write the behavioral
-      fixtures (`contracts/search-cases.json` in `eloisesearch-integration`).
-- [ ] Express every fixture as a request in the compatible API (index mapping,
-      `_bulk` load, `_search` bodies), and record the reference responses.
+- [x] Reference harness: Elasticsearch 9.5.4 and OpenSearch 3.9.0 run as pinned
+      containers locally and in `eloisesearch-integration` CI
+      ([design](https://github.com/eloisesearch-foundation/eloisesearch-integration/blob/main/docs/design-reference-harness.md)).
+- [x] Freeze the deterministic movie test corpus and write the behavioral
+      fixtures (`contracts/fixtures/movies/` and `contracts/cases/` in
+      `eloisesearch-integration`).
+- [x] Express every fixture as a request in the compatible API (index mapping,
+      `_bulk` load, `_search` bodies), and record the reference responses
+      (reviewed baselines in `contracts/baselines/`; differences in
+      `contracts/divergences.json`).
 - [ ] Decide the malformed-query contract (`lenient` parsing vs 400
       `parsing_exception`).
 - [ ] Decide the "To decide" rows of the matrix: `completion` suggester vs
