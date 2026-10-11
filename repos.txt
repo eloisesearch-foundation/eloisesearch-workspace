@@ -12,6 +12,6 @@
 # A repository that does not exist on the remote yet is skipped with a warning.
 
 eloisesearch              git@github.com:eloisesearch-foundation/eloisesearch.git              core
-eloisesearch-integration  git@github.com:eloisesearch-foundation/eloisesearch-integration.git  sdk
+eloisesearch-integration  git@github.com:eloisesearch-foundation/eloisesearch-integration.git  core
 eloisesearch-ruby         git@github.com:eloisesearch-foundation/eloisesearch-ruby.git         sdk
 eloisesearch-javascript   git@github.com:eloisesearch-foundation/eloisesearch-javascript.git   sdk
