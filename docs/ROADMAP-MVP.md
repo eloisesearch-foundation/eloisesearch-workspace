@@ -9,8 +9,10 @@ and pagination, with indexes that survive restarts. Everything the demo relies o
 is documented in the API contract and proven by tests.
 
 The MVP is a single-node service whose API is a documented subset of the
-Elasticsearch 9.5.4 REST API and Query DSL, to be checked against Elasticsearch
-9.5.4 and OpenSearch 3.9.0 by the reference harness (Phase 0), so teams can migrate existing applications and tools by pointing them at Eloisesearch. The
+Elasticsearch 9.5.4 REST API and Query DSL, pinned by contract cases that pass on
+Elasticsearch 9.5.4 and OpenSearch 3.9.0 (the reference harness, Phase 0), so
+teams can migrate existing applications and tools by pointing them at
+Eloisesearch. The
 demo itself is written against that compatible API.
 
 ## Ground rules
@@ -32,7 +34,7 @@ demo itself is written against that compatible API.
 
 Status: **Done**, **In progress**, **Next**, **Planned**.
 
-### Phase 0 — Define the contract (`eloisesearch`, `eloisesearch-integration`) — In progress
+### Phase 0 — Define the contract (`eloisesearch`, `eloisesearch-integration`) — Done
 
 Outcome: the team can say exactly which requests the MVP supports and how success
 is measured.
@@ -53,12 +55,33 @@ is measured.
       `_bulk` load, `_search` bodies), and record the reference responses
       (reviewed baselines in `contracts/baselines/`; differences in
       `contracts/divergences.json`).
-- [ ] Decide the malformed-query contract (`lenient` parsing vs 400
-      `parsing_exception`).
-- [ ] Decide the "To decide" rows of the matrix: `completion` suggester vs
-      edge-n-gram prefix match, `english` analyzer, `query_string`, standalone
-      `prefix`/`wildcard`/`fuzzy`, accepted shard/replica settings.
-- [ ] Label every candidate capability MVP / next phase / out of scope.
+- [x] Decide the malformed-query contract: incomplete `simple_query_string`
+      input is interpreted as the references do and never fails; broken
+      `query_string` syntax is a 400.
+- [x] Decide the "To decide" rows of the matrix: completion suggester and
+      `query_string` in the MVP; the application's custom English chain (the
+      built-in `english` analyzer, `edge_ngram` and standalone
+      `prefix`/`wildcard`/`fuzzy` next); one shard with 0 or 1 replicas; no
+      `dynamic` declared behaves as `dynamic: false` (D-004).
+- [x] Label every candidate capability MVP / next phase / out of scope
+      ([`api-contract.md`](https://github.com/eloisesearch-foundation/eloisesearch/blob/main/docs/api-contract.md)).
+
+Definition of done (all met):
+
+- Elasticsearch 9.5.4 and OpenSearch 3.9.0 are pinned and start reproducibly in
+  CI and locally.
+- The corpus, the mapping and the cases are versioned and use no external data.
+- Every MVP fixture is a request in the compatible API.
+- The harness runs the same cases against both references and writes results
+  identified by engine and version; reviewed baselines are committed.
+- IDs, totals, relevant order, response shape, facets and errors are checked
+  per case; scores and timings never are.
+- Differences between the references, and intentional differences from both,
+  are recorded as divergences; no MVP row of the matrix is undecided.
+- The local procedure and the CI jobs are documented and pass.
+
+The reference gate does not make anything Supported: a capability becomes
+Supported only when its cases also pass against Eloisesearch.
 
 ### Phase 1 — Service foundation (`eloisesearch`) — Done
 
@@ -119,14 +142,14 @@ compatible API.
       (`hits.total`, `hits.hits`, `_source`, `highlight`, `aggregations`).
 - [ ] Field types and analysis: lowercase, accent folding, edge n-grams.
 - [ ] Query DSL subset: `match_all`, `bool`, `simple_query_string` (phrases,
-      exclusions, `+`, prefix, fuzzy, field boosts), `match`, `multi_match`
-      phrase, `term`, `terms`, `range`.
+      exclusions, `+`, prefix, fuzzy, field boosts), `query_string`, `match`,
+      `multi_match`, `term`, `terms`, `range`.
 - [ ] `from`/`size`, `sort` with deterministic ties, `_source` filtering.
-- [ ] `aggs` (`terms`, `histogram`), `highlight`, suggestions.
+- [ ] `aggs` (`terms`, `histogram`), `highlight`, completion suggestions.
 - [ ] Unsupported routes, parameters and query constructs rejected with the
       documented error types.
-- [ ] Every MVP feature has request/response fixtures and moves to **Supported**
-      in `api-contract.md`.
+- [ ] Every MVP feature's contract cases pass against Eloisesearch and the row
+      moves to **Supported** in `api-contract.md`.
 - [ ] Boundary cases tested: blank input, long prefixes, accents, no matches,
       invalid pagination, malformed queries.
 - [ ] Compatibility tests: each Supported row compared against Elasticsearch
