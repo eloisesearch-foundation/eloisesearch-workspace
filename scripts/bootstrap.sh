@@ -9,6 +9,10 @@
 #   --pull          fast-forward repositories that are already cloned
 #   --dry-run       print what would happen, touch nothing (no network)
 #
+# Exit status: 0 when everything requested succeeded (repositories that do not
+# exist on the remote yet are reported, not counted as failures); 1 when a pull,
+# clone or remote check failed (authentication, network, diverged branch, ...).
+#
 # Environment:
 #   WORKSPACE_ROOT  where repositories are cloned (default: parent of the meta-repo)
 #   GIT_PROTOCOL    ssh | https (default: ssh locally, https in Codespaces)
@@ -25,7 +29,7 @@ for arg in "$@"; do
     --sdk|--all)     with_sdk=true ;;
     --dry-run)       dry_run=true ;;
     --pull)          pull=true ;;
-    -h|--help)       sed -n '2,15p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    -h|--help)       awk 'NR > 1 && /^#/ { sub(/^# ?/, ""); print; next } NR > 1 { exit }' "$0"; exit 0 ;;
     *)               error "unknown option: $arg"; exit 2 ;;
   esac
 done
@@ -33,7 +37,7 @@ done
 info "workspace root: ${C_BOLD}$WORKSPACE_ROOT${C_RESET} (protocol: $GIT_PROTOCOL)"
 $dry_run && info "dry run: nothing will be changed"
 
-cloned=0; present=0; skipped=0; missing=0
+cloned=0; present=0; skipped=0; missing=0; failed=0
 
 while read -r dir url group; do
   case "$group" in
@@ -52,7 +56,12 @@ while read -r dir url group; do
         printf '  %-26s %s\n' "$dir" "${C_DIM}would pull --ff-only${C_RESET}"
       else
         printf '  %-26s ' "$dir"
-        git -C "$target" pull --ff-only --quiet 2>/dev/null && echo "${C_GREEN}updated${C_RESET}" || echo "${C_YELLOW}pull failed (local changes or diverged)${C_RESET}"
+        if out="$(GIT_TERMINAL_PROMPT=0 git -C "$target" pull --ff-only --quiet 2>&1)"; then
+          echo "${C_GREEN}updated${C_RESET}"
+        else
+          echo "${C_RED}pull failed:${C_RESET} $(first_line "$out")"
+          failed=$((failed + 1))
+        fi
       fi
     else
       printf '  %-26s %s\n' "$dir" "${C_DIM}already cloned${C_RESET}"
@@ -71,18 +80,32 @@ while read -r dir url group; do
     continue
   fi
 
-  if ! GIT_TERMINAL_PROMPT=0 git ls-remote "$remote" >/dev/null 2>&1; then
-    printf '  %-26s %s\n' "$dir" "${C_YELLOW}not found on remote (not created yet?)${C_RESET}"
-    missing=$((missing + 1))
+  if ! out="$(GIT_TERMINAL_PROMPT=0 git ls-remote "$remote" 2>&1 >/dev/null)"; then
+    if grep -qiE "repository not found|does not exist|not found" <<<"$out"; then
+      printf '  %-26s %s\n' "$dir" "${C_YELLOW}not found on remote (not created yet?)${C_RESET}"
+      missing=$((missing + 1))
+    else
+      # Authentication, network or permission problem: the repository may exist.
+      printf '  %-26s %s\n' "$dir" "${C_RED}cannot reach remote:${C_RESET} $(first_line "$out")"
+      failed=$((failed + 1))
+    fi
     continue
   fi
 
   printf '  %-26s %s\n' "$dir" "cloning $remote"
-  git clone --quiet "$remote" "$target"
-  cloned=$((cloned + 1))
+  if out="$(GIT_TERMINAL_PROMPT=0 git clone --quiet "$remote" "$target" 2>&1)"; then
+    cloned=$((cloned + 1))
+  else
+    printf '  %-26s %s\n' "" "${C_RED}clone failed:${C_RESET} $(first_line "$out")"
+    failed=$((failed + 1))
+  fi
 done < <(manifest_entries)
 
-info "done: $cloned cloned, $present already present, $missing not on remote, $skipped skipped"
+info "done: $cloned cloned, $present already present, $missing not on remote, $skipped skipped, $failed failed"
 if (( missing > 0 )); then
   warn "create the missing repositories on GitHub and run this script again"
+fi
+if (( failed > 0 )); then
+  error "$failed operation(s) failed; see the messages above"
+  exit 1
 fi

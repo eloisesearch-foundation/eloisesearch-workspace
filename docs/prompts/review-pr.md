@@ -26,7 +26,9 @@ not the decision maker: the maintainer merges.
 - Do not edit code, push, approve or merge.
 - Do not accept "tests pass" as proof of a guarantee that has no test.
 - Do not suggest unrelated refactors; list them separately as optional.
-- Flag any third-party product name in code, docs or messages.
+- Flag third-party product names used outside compatibility contexts, and any
+  change to a compatible route or query feature without a matching update to
+  `api-contract.md` and a test against the reference.
 
 ## Validation
 

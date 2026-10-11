@@ -27,6 +27,15 @@ info()  { printf '%s\n' "${C_GREEN}==>${C_RESET} $*"; }
 warn()  { printf '%s\n' "${C_YELLOW}warn:${C_RESET} $*" >&2; }
 error() { printf '%s\n' "${C_RED}error:${C_RESET} $*" >&2; }
 
+# The most useful line of a git error output, for compact messages: the first
+# "fatal:"/"error:" line if there is one, otherwise the first non-empty line.
+first_line() {
+  local line
+  line="$(printf '%s\n' "$1" | grep -m1 -E '^(fatal|error|ERROR|remote: ERROR)' || true)"
+  [[ -n "$line" ]] || line="$(printf '%s\n' "$1" | sed -n '/[^[:space:]]/{p;q;}')"
+  printf '%s' "$line"
+}
+
 # Convert git@github.com:owner/repo.git -> https://github.com/owner/repo.git when needed.
 resolve_url() {
   local url="$1"

@@ -56,6 +56,7 @@ is safe to run at any time.
 1. Open this repository in a Codespace (4-core / 8 GB machine).
 2. Accept the extra repository permissions requested by `devcontainer.json`.
 3. `postCreateCommand` runs `scripts/bootstrap.sh --all` and clones the siblings into `/workspaces/`.
+   It exits with an error if a clone fails for a reason other than the repository not existing yet.
 4. **File → Open Workspace from File… →** `eloisesearch.code-workspace`.
 
 Codespaces does not make sibling repositories available on its own; the bootstrap script
@@ -72,6 +73,7 @@ and the `customizations.codespaces.repositories` permissions are what make it wo
 | `scripts/each.sh <cmd…>` | Run a command in every cloned repository, e.g. `scripts/each.sh git pull --ff-only`. |
 | `scripts/new-design.sh <topic> [repo]` | Create `<repo>/docs/design-<topic>.md` from the template (`make docs-new-design`). |
 | `scripts/check-docs.py` | Report broken relative links in Markdown across all cloned repositories (`make docs-check`). |
+| `scripts/check-manifest.py` | Check that `repos.txt`, the `.code-workspace` and the dev container permissions list the same repositories (`make check`, also in CI). |
 
 Environment overrides: `WORKSPACE_ROOT` (where siblings live, default `..`) and
 `GIT_PROTOCOL` (`ssh` locally, `https` automatically in Codespaces).
@@ -82,7 +84,7 @@ Environment overrides: `WORKSPACE_ROOT` (where siblings live, default `..`) and
 2. Add a line to [`repos.txt`](repos.txt).
 3. Add it to `eloisesearch.code-workspace` and to `customizations.codespaces.repositories`
    in [`.devcontainer/devcontainer.json`](.devcontainer/devcontainer.json).
-4. Run `scripts/bootstrap.sh`.
+4. Run `make check` (CI runs it too) and `scripts/bootstrap.sh`.
 
 ## Documentation
 

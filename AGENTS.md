@@ -8,8 +8,10 @@ read that file too.
 ## What this repository is for
 
 Eloisesearch gives application developers full-text search without operating a
-search cluster: one binary, one data directory, a versioned HTTP/JSON API, and
-SDKs for Rails and JavaScript. The work is split across several repositories.
+search cluster: one binary, one data directory, and an API that is a documented
+subset of the Elasticsearch 9.5.4 REST API and Query DSL (verified against
+OpenSearch), so existing applications and tools can migrate by changing the
+server address. SDKs for Rails and JavaScript are planned. The work is split across several repositories.
 This meta-repo is where they are opened together, where cross-repository
 planning lives, and where the shared documentation conventions and tooling are
 kept. It contains no product code.
@@ -77,8 +79,12 @@ task lists. Tick an item in the commit that completes it.
   Validation** ([template](docs/templates/design.md)).
 - State what is verified and what is planned. A claim about current behavior
   points at the code or test that proves it.
-- No third-party product names in code, docs, tests or commits. Describe
-  behavior on its own terms.
+- Third-party product names (Elasticsearch, OpenSearch) only where compatibility
+  needs them: compatibility matrices, migration guides, compatibility tests and
+  comments explaining a compatibility rule. Descriptive wording, trademark notice
+  in user-facing docs, no logos, no marketing comparisons, no competitor research
+  in the repositories. Never send identifiers that present Eloisesearch as
+  another product.
 - No emojis in docs, file names or editor configuration.
 
 ## Rules for agents

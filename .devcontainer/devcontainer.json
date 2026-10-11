@@ -39,6 +39,8 @@
   "customizations": {
     "codespaces": {
       // Lets the Codespace token clone and push the sibling repositories.
+      // "pull_requests: write" is only needed to open PRs from inside the
+      // Codespace (gh pr create); remove it to keep the token to pushes only.
       "repositories": {
         "eloisesearch-foundation/eloisesearch": { "permissions": { "contents": "write", "pull_requests": "write" } },
         "eloisesearch-foundation/eloisesearch-integration": { "permissions": { "contents": "write", "pull_requests": "write" } },

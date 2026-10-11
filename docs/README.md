@@ -15,7 +15,7 @@ only in the roadmap.
 
 - [README](https://github.com/eloisesearch-foundation/eloisesearch#readme): what it is for, quick start
 - [Architecture](https://github.com/eloisesearch-foundation/eloisesearch/blob/main/docs/ARCHITECTURE.md)
-- [API contract and feature matrix](https://github.com/eloisesearch-foundation/eloisesearch/blob/main/docs/api-contract.md)
+- [API contract and compatibility matrix](https://github.com/eloisesearch-foundation/eloisesearch/blob/main/docs/api-contract.md)
 - [Design decisions](https://github.com/eloisesearch-foundation/eloisesearch/blob/main/docs/design-decisions.md)
 - [Quality, relevance and benchmark plan](https://github.com/eloisesearch-foundation/eloisesearch/blob/main/docs/quality-plan.md)
 - [Configuration](https://github.com/eloisesearch-foundation/eloisesearch/blob/main/docs/configuration.md)
