@@ -1,0 +1,64 @@
+{
+  // Dev container for GitHub Codespaces / VS Code Dev Containers.
+  // The meta-repo is opened at /workspaces/eloisesearch-workspace and the other
+  // repositories are cloned as siblings in /workspaces/ by scripts/bootstrap.sh,
+  // so eloisesearch.code-workspace works unchanged locally and in Codespaces.
+  "name": "Eloisesearch",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+
+  "features": {
+    "ghcr.io/devcontainers/features/rust:1": {
+      "version": "latest",
+      "profile": "default"
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22"
+    },
+    "ghcr.io/devcontainers/features/ruby:1": {
+      // Ruby SDK (eloisesearch-ruby) and Rails demo apps
+      "version": "3.4.5"
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+
+  // Rust release builds and index benchmarks need room.
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "8gb"
+  },
+
+  "postCreateCommand": "corepack enable && bash scripts/bootstrap.sh --all",
+
+  "forwardPorts": [3000, 3001],
+  "portsAttributes": {
+    "3000": { "label": "Demo API (eloisesearch-integration)" },
+    "3001": { "label": "Demo frontend (eloisesearch-integration)" }
+  },
+
+  "customizations": {
+    "codespaces": {
+      // Lets the Codespace token clone and push the sibling repositories.
+      "repositories": {
+        "eloisesearch-foundation/eloisesearch": { "permissions": { "contents": "write", "pull_requests": "write" } },
+        "eloisesearch-foundation/eloisesearch-integration": { "permissions": { "contents": "write", "pull_requests": "write" } },
+        "eloisesearch-foundation/eloisesearch-ruby": { "permissions": { "contents": "write", "pull_requests": "write" } },
+        "eloisesearch-foundation/eloisesearch-javascript": { "permissions": { "contents": "write", "pull_requests": "write" } }
+      },
+      "openFiles": ["README.md"]
+    },
+    "vscode": {
+      "extensions": [
+        "rust-lang.rust-analyzer",
+        "tamasfe.even-better-toml",
+        "vadimcn.vscode-lldb",
+        "shopify.ruby-lsp",
+        "vue.volar",
+        "dbaeumer.vscode-eslint",
+        "editorconfig.editorconfig",
+        "humao.rest-client",
+        "github.vscode-github-actions"
+      ]
+    }
+  }
+}

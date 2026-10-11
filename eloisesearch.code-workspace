@@ -1,0 +1,55 @@
+{
+  // Multi-root workspace for the Eloisesearch repositories.
+  // Paths are relative to this file: repositories are siblings of the meta-repo,
+  // both locally (~/Development/eloisesearch-foundation/*) and in Codespaces (/workspaces/*).
+  // Run `scripts/bootstrap.sh` first so every folder below exists.
+  "folders": [
+    { "name": "root", "path": "." },
+    { "name": "core", "path": "../eloisesearch" }
+
+    // SDKs and integration: once the repositories exist and are cloned
+    // (`scripts/bootstrap.sh --sdk`), add a comma above and uncomment.
+    // { "name": "integration", "path": "../eloisesearch-integration" },
+    // { "name": "sdk-ruby", "path": "../eloisesearch-ruby" },
+    // { "name": "sdk-javascript", "path": "../eloisesearch-javascript" }
+  ],
+  "settings": {
+    "editor.formatOnSave": true,
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "files.exclude": {
+      "**/.DS_Store": true
+    },
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/target": true,
+      "**/.nuxt": true,
+      "**/.output": true,
+      "**/dist": true,
+      "**/tmp": true,
+      "**/log": true,
+      "**/vendor/bundle": true
+    },
+    "files.watcherExclude": {
+      "**/target/**": true,
+      "**/node_modules/**": true
+    },
+    "[rust]": {
+      "editor.defaultFormatter": "rust-lang.rust-analyzer"
+    },
+    "rust-analyzer.check.command": "clippy"
+  },
+  "extensions": {
+    "recommendations": [
+      "rust-lang.rust-analyzer",
+      "tamasfe.even-better-toml",
+      "vadimcn.vscode-lldb",
+      "shopify.ruby-lsp",
+      "vue.volar",
+      "dbaeumer.vscode-eslint",
+      "editorconfig.editorconfig",
+      "humao.rest-client",
+      "github.vscode-github-actions"
+    ]
+  }
+}

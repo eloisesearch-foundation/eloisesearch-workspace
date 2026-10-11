@@ -1,0 +1,14 @@
+# OS / editor
+.DS_Store
+*.swp
+.idea/
+
+# Local environment
+.env
+.env.*
+!.env.example
+
+# Safety net: if repositories are ever cloned inside the meta-repo
+# (e.g. WORKSPACE_ROOT=.), never version them here.
+/eloisesearch/
+/eloisesearch-*/

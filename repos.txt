@@ -1,0 +1,17 @@
+# Eloisesearch meta-repo manifest
+#
+# One repository per line, whitespace-separated:
+#   <directory>  <git-url>  <group>
+#
+# Groups:
+#   core       cloned by default (scripts/bootstrap.sh)
+#   sdk        cloned with --sdk or --all
+#
+# Repositories are cloned as SIBLINGS of this meta-repo
+# (../<directory>), both locally and in GitHub Codespaces (/workspaces/<directory>).
+# A repository that does not exist on the remote yet is skipped with a warning.
+
+eloisesearch              git@github.com:eloisesearch-foundation/eloisesearch.git              core
+eloisesearch-integration  git@github.com:eloisesearch-foundation/eloisesearch-integration.git  sdk
+eloisesearch-ruby         git@github.com:eloisesearch-foundation/eloisesearch-ruby.git         sdk
+eloisesearch-javascript   git@github.com:eloisesearch-foundation/eloisesearch-javascript.git   sdk
