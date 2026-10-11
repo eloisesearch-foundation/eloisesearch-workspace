@@ -9,8 +9,8 @@ read that file too.
 
 Eloisesearch gives application developers full-text search without operating a
 search cluster: one binary, one data directory, and an API that is a documented
-subset of the Elasticsearch 9.5.4 REST API and Query DSL (to be checked against
-Elasticsearch and OpenSearch by compatibility suites), so existing applications and tools can migrate by changing the
+subset of the Elasticsearch 9.5.4 REST API and Query DSL (pinned by contract
+cases verified against Elasticsearch and OpenSearch), so existing applications and tools can migrate by changing the
 server address. SDKs for Rails and JavaScript are planned. The work is split across several repositories.
 This meta-repo is where they are opened together, where cross-repository
 planning lives, and where the shared documentation conventions and tooling are
